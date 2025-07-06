@@ -12,6 +12,7 @@ import {
   ThumbsUp,
   ThumbsDown,
 } from "lucide-react";
+import Markdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
@@ -177,10 +178,10 @@ export default function ChatInterface() {
                   "max-w-[80%] px-4 py-2 rounded-2xl",
                   message.role === "user"
                     ? "bg-white border border-gray-200 rounded-br-none"
-                    : "text-gray-900"
+                    : "text-gray-900 prose prose-sm"
                 )}
               >
-                <span>{message.content}</span>
+                <Markdown>{message.content}</Markdown>
               </div>
 
               {message.role === "assistant" && (
