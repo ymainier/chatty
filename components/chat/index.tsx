@@ -13,7 +13,7 @@ export function Chat() {
 
   const { isMobile, viewportHeight } = useMobileViewport(mainContainerRef);
 
-  const { messages, input, handleInputChange, handleSubmit } = useChat();
+  const { messages, input, handleInputChange, handleSubmit, status, stop } = useChat();
 
   return (
     <div
@@ -30,6 +30,8 @@ export function Chat() {
         onInputChange={handleInputChange}
         onSubmit={handleSubmit}
         isMobile={isMobile}
+        status={status}
+        stop={stop}
       />
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Search, Lightbulb, ArrowUp } from "lucide-react";
+import { Plus, Search, Lightbulb, ArrowUp, CircleStop } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTextareaSelection } from "@/hooks/use-textarea-selection";
 
@@ -16,6 +16,8 @@ type ChatInputProps = {
       | React.KeyboardEvent<HTMLTextAreaElement>
   ) => void;
   isMobile: boolean;
+  status: "submitted" | "streaming" | "ready" | "error";
+  stop: () => void;
 };
 
 export function ChatInput({
@@ -23,12 +25,15 @@ export function ChatInput({
   onInputChange,
   onSubmit,
   isMobile,
+  status,
+  stop,
 }: ChatInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null!);
   const inputContainerRef = useRef<HTMLDivElement>(null!);
   const [activeButton, setActiveButton] = useState<ActiveButton>("none");
   const { saveSelectionState, restoreSelectionState } =
     useTextareaSelection(textareaRef);
+  const canStop = status === "streaming" || status === "submitted";
 
   // Focus the textarea on component mount (only on desktop)
   useEffect(() => {
@@ -168,24 +173,37 @@ export function ChatInput({
                   </span>
                 </Button>
               </div>
-              <Button
-                type="submit"
-                variant="outline"
-                size="icon"
-                className={cn(
-                  "rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200",
-                  input.trim() ? "bg-black scale-110" : "bg-gray-200"
-                )}
-                disabled={!input.trim()}
-              >
-                <ArrowUp
+              {canStop ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full h-8 w-8 border-0 bg-black scale-110 transition-all duration-200 cursor-pointer"
+                  onClick={stop}
+                >
+                  <CircleStop className="h-4 w-4 text-white" />
+                  <span className="sr-only">Stop</span>
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  variant="outline"
+                  size="icon"
                   className={cn(
-                    "h-4 w-4 transition-colors",
-                    input.trim() ? "text-white" : "text-gray-500"
+                    "rounded-full h-8 w-8 border-0 flex-shrink-0 transition-all duration-200 cursor-pointer",
+                    input.trim() ? "bg-black scale-110" : "bg-gray-200"
                   )}
-                />
-                <span className="sr-only">Submit</span>
-              </Button>
+                  disabled={!input.trim()}
+                >
+                  <ArrowUp
+                    className={cn(
+                      "h-4 w-4 transition-colors",
+                      input.trim() ? "text-white" : "text-gray-500"
+                    )}
+                  />
+                  <span className="sr-only">Submit</span>
+                </Button>
+              )}
             </div>
           </div>
         </div>
