@@ -28,15 +28,15 @@ export function ChatMessage({
       </div>
       {role === "assistant" && (
         <div className="flex items-center gap-2 px-4 mt-1 mb-2">
-          <ChatAssistantButton
+          <ChatAssistantButton tooltip="Copy to clipboard"
             onClick={() => navigator.clipboard.writeText(content)}
           >
             <Copy className="h-4 w-4" />
           </ChatAssistantButton>
-          <ChatAssistantButton onClick={() => alert(`👍 ${id}`)}>
+          <ChatAssistantButton tooltip="Good response" onClick={() => alert(`👍 ${id}`)}>
             <ThumbsUp className="h-4 w-4" />
           </ChatAssistantButton>
-          <ChatAssistantButton onClick={() => alert(`👎 ${id}`)}>
+          <ChatAssistantButton tooltip="Bad response" onClick={() => alert(`👎 ${id}`)}>
             <ThumbsDown className="h-4 w-4" />
           </ChatAssistantButton>
         </div>
