@@ -20,7 +20,7 @@ type ChatInputProps = {
   stop: () => void;
 };
 
-export function ChatInput({
+export function Input({
   input,
   onInputChange,
   onSubmit,

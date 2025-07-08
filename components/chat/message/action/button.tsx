@@ -4,7 +4,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function ChatAssistantButton({
+export function Button({
   tooltip,
   onClick,
   children,

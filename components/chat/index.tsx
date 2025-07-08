@@ -4,9 +4,9 @@ import type React from "react";
 import { useRef } from "react";
 import { useChat } from "@ai-sdk/react";
 import { ChatMessages } from "@/components/chat/messages";
-import { ChatInput } from "@/components/chat/input";
+import { Input } from "@/components/chat/input";
 import { useMobileViewport } from "@/hooks/use-mobile-viewport";
-import { ChatHeader } from "@/components/chat/header";
+import { Header } from "@/components/chat/header";
 
 export function Chat() {
   const mainContainerRef = useRef<HTMLDivElement>(null!);
@@ -21,11 +21,11 @@ export function Chat() {
       className="bg-gray-50 flex flex-col overflow-hidden"
       style={{ height: isMobile ? `${viewportHeight}px` : "100svh" }}
     >
-      <ChatHeader />
+      <Header />
 
       <ChatMessages messages={messages} />
 
-      <ChatInput
+      <Input
         input={input}
         onInputChange={handleInputChange}
         onSubmit={handleSubmit}
