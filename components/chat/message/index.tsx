@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 import { AssistantActions } from "@/components/chat/message/assistant-actions";
 
 export function Message({
-  message: { id, role, content },
+  message: { id, role, parts },
 }: {
   message: UIMessage;
 }) {
@@ -23,10 +23,20 @@ export function Message({
             : "text-gray-900 prose"
         )}
       >
-        <Markdown>{content}</Markdown>
+        {parts.map((part, index) =>
+          part.type === "text" ? (
+            <Markdown key={index}>{part.text}</Markdown>
+          ) : null
+        )}
       </div>
       {role === "assistant" && (
-        <AssistantActions id={id} content={content} />
+        <AssistantActions
+          id={id}
+          content={parts
+            .filter((p) => p.type === "text")
+            .map((p) => p.text)
+            .join("\n\n")}
+        />
       )}
     </div>
   );
