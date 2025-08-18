@@ -1,19 +1,14 @@
 "use client";
 
 import type React from "react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { ChatMessages } from "@/components/chat/messages";
 import { Input } from "@/components/chat/input";
-import { useMobileViewport } from "@/hooks/use-mobile-viewport";
 import { Header } from "@/components/chat/header";
 import { DefaultChatTransport } from "ai";
 
 export function Chat() {
-  const mainContainerRef = useRef<HTMLDivElement>(null!);
-
-  const { isMobile, viewportHeight } = useMobileViewport(mainContainerRef);
-
   const { messages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
@@ -22,14 +17,12 @@ export function Chat() {
   const [input, setInput] = useState("");
 
   return (
-    <div
-      ref={mainContainerRef}
-      className="bg-gray-50 flex flex-col overflow-hidden"
-      style={{ height: isMobile ? `${viewportHeight}px` : "100svh" }}
-    >
+    <div className="bg-gray-50 flex flex-col overflow-hidden h-screen p-4 max-w-4xl mx-auto">
       <Header />
 
-      <ChatMessages messages={messages} />
+      <div className="flex-1 overflow-auto">
+        <ChatMessages messages={messages} />
+      </div>
 
       <Input
         input={input}
@@ -39,11 +32,11 @@ export function Chat() {
           if (input.trim()) {
             sendMessage({ text: input });
             setInput("");
+          } else if (status) {
+            stop();
           }
         }}
-        isMobile={isMobile}
         status={status}
-        stop={stop}
       />
     </div>
   );
