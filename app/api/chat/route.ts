@@ -23,7 +23,7 @@ export async function POST(req: Request) {
   const isPirate = mode === "pirate";
 
   const result = streamText({
-    model: openai("gpt-4o"),
+    model: openai("gpt-5-mini"),
     system: isPirate ? "You are a helpful assistant named Chatty, you always speak as a pirate. answer using markdown unless asked otherwise." :
       "You are a helpful assistant named Chatty. answer using markdown unless asked otherwise.",
     messages: convertToModelMessages(messages),
