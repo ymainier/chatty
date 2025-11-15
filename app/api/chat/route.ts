@@ -18,11 +18,13 @@ export const weather = tool({
 });
 
 export async function POST(req: Request) {
-  const { messages }: { messages: UIMessage[] } = await req.json();
+  const { messages, mode }: { messages: UIMessage[], mode: string } = await req.json();
+
+  const isPirate = mode === "pirate";
 
   const result = streamText({
-    model: openai("gpt-4o-mini"),
-    system:
+    model: openai("gpt-4o"),
+    system: isPirate ? "You are a helpful assistant named Chatty, you always speak as a pirate. answer using markdown unless asked otherwise." :
       "You are a helpful assistant named Chatty. answer using markdown unless asked otherwise.",
     messages: convertToModelMessages(messages),
     tools: { weather },
